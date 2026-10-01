@@ -1,0 +1,26 @@
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+
+        def rec(nums,i,state,dp):
+            if i>=len(nums) and state==0:
+                return 0
+            if i>=len(nums):
+                return 1
+            if dp[i][state]!=-1:
+                return dp[i][state]
+            pick = float('-inf')
+            if state<=1:
+                pick = nums[i]*rec(nums,i+1,1,dp)
+            if state>=1:
+                no_pick = rec(nums,i+1,2,dp)
+            else:
+                no_pick = rec(nums,i+1,0,dp)
+            
+            dp[i][state] = max(pick,no_pick)
+            return dp[i][state]
+
+        if len(nums)==1:
+            return nums[0]
+        
+        dp = [[-1]*3 for i in range(len(nums))]
+        return rec(nums,0,0,dp)
